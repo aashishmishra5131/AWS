@@ -1,0 +1,5 @@
+- This is a TypeScript backend project with Express.js and MongoDB
+- Authentication uses JWT tokens (cookie + Bearer header)
+- Password hashing uses bcryptjs
+- Run `npm run dev` for development
+- Run `npm run build && npm start` for production
