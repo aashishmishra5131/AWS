@@ -13,17 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Debug Secret Availability
-        run: |
-          if [ -z "$SSH_KEY" ]; then
-            echo "❌ ERROR: EC2_SSH_KEY secret is empty. GitHub Actions cannot see it."
-            exit 1
-          else
-            echo "✅ SUCCESS: EC2_SSH_KEY secret is present. Length: ${#SSH_KEY}"
-          fi
-        env:
-          SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
-
 
       - name: Deploy to EC2 instance via SSH
         uses: appleboy/ssh-action@v1.0.3
@@ -33,8 +22,8 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             # Navigate to your project directory on the EC2 instance
-            # Replace /home/ubuntu/your-project-folder with the actual path
-            cd /home/ubuntu/your-project-folder
+            # Since you are on Amazon Linux, the home directory is /home/ec2-user
+            cd /home/ec2-user/AWS
 
             # Pull the latest code from the main branch
             git pull origin main
