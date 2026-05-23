@@ -21,18 +21,24 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # Navigate to your project directory on the EC2 instance
-            # Since you are on Amazon Linux, the home directory is /home/ec2-user
-            cd /home/ec2-user/AWS
-
-            # Pull the latest code from the main branch
-            git pull origin main
+            # Check if the AWS folder exists
+            if [ ! -d "/home/ec2-user/AWS" ]; then
+              echo "Directory does not exist. Cloning repository..."
+              cd /home/ec2-user
+              git clone https://github.com/aashishmishra5131/AWS.git
+              cd AWS
+            else
+              echo "Directory exists. Pulling latest changes..."
+              cd /home/ec2-user/AWS
+              git pull origin main
+            fi
 
             # Install dependencies
             npm install
 
             # Build the TypeScript code
             npm run build
+
 
             # Restart the application
             # If using pm2 (recommended for Node.js apps):
