@@ -3,7 +3,7 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - main # Change this if your default branch has a different name
+      - main
 
 jobs:
   deploy:
@@ -23,16 +23,16 @@ jobs:
             # Navigate to your project directory on the EC2 instance
             # Replace /home/ubuntu/your-project-folder with the actual path
             cd /home/ubuntu/your-project-folder
-            
+
             # Pull the latest code from the main branch
             git pull origin main
-            
+
             # Install dependencies
             npm install
-            
+
             # Build the TypeScript code
             npm run build
-            
+
             # Restart the application
             # If using pm2 (recommended for Node.js apps):
             # pm2 restart your-app-name
