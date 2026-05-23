@@ -1,0 +1,40 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main # Change this if your default branch has a different name
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to EC2 instance via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # Navigate to your project directory on the EC2 instance
+            # Replace /home/ubuntu/your-project-folder with the actual path
+            cd /home/ubuntu/your-project-folder
+            
+            # Pull the latest code from the main branch
+            git pull origin main
+            
+            # Install dependencies
+            npm install
+            
+            # Build the TypeScript code
+            npm run build
+            
+            # Restart the application
+            # If using pm2 (recommended for Node.js apps):
+            # pm2 restart your-app-name
+            # Or if it's a simple restart:
+            # npm run start
